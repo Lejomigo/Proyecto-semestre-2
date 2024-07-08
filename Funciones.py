@@ -11,7 +11,7 @@ import re
 # [5] = nombre de habitante
 # [6] = ci del habitante
 #Definir los Regex
-regexNombre = r"^[A-Z][a-zA-Z' -]+ [A-Z][a-zA-Z' -]+$"
+regexNombre = r"^[A-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚáéíóúñÑ' -]+ [A-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚáéíóúñÑ' -]+$"
 patternNombre = re.compile(regexNombre)
 regexCedula = r"^[VE]-\d{7,8}$"
 patternCedula = re.compile(regexCedula)
@@ -55,6 +55,7 @@ def validarCedula(cedula):
 
 def validarNombre(nombre):
     if patternNombre.match(nombre):
+        print('hola')
         return True
     else:
         return False
@@ -81,16 +82,16 @@ def verDisponibilidad(matriz):
     for i in range(len(matriz)):
         print(f"La habitacion {matriz[i][0]} está {estadoHabitacion(matriz[i][2]) } y es una habitacion {tipoDeHabitacion(matriz[i][1])}")
         if estadoHabitacion(matriz[i][2])== 'Ocupada':
-            print(f'está ocupada desde el dia {matriz[i][3]} hasta el día {matriz[i][4]}')
+            print(f'está ocupada desde el dia {matriz[i][3]} hasta el día {matriz[i][4]} por la persona {matriz[i][5]} con cédula {matriz[i][6]}')
 
 def buscarUnaHab(matriz):
     print('-------------------------------------------------')
     print('1) Buscar por un tipo de habitación')
     print('2) Buscar por número de habitación')
     print()
-    choose= int(input('Qué desea hacer?: '))
-    if choose==1 or choose==2:
-        if choose==1:
+    choose= input('Qué desea hacer?: ')
+    if choose=='1' or choose=='2':
+        if choose=='1':
             print('-------------------------------------------------')
             print('Tipo de habitación:')
             print('1) Sencilla')
@@ -98,21 +99,21 @@ def buscarUnaHab(matriz):
             print('3) Suit')
             print('4) Presidencial')
             print()
-            desicion=int(input('Cual desea: '))
-            if desicion<1 or desicion>4:
+            decision=int(input('Cual desea: '))
+            if decision<1 or decision>4:
                 return print('Error, elegiste la opción incorrecta. ')
             else: 
                 for i in range(len(matriz)):
-                    if matriz[i][1]==desicion-1:
+                    if matriz[i][1]==decision-1:
                         print(f'La habitacion {matriz[i][0]} es del tipo que buscas y está {estadoHabitacion(matriz[i][2])}')
         elif choose==2:
             print('Ingrese el número de habitación que desea: ')
-            desicion=int(input(''))
-            if desicion<1 or desicion>15:
+            decision=int(input(''))
+            if decision<1 or decision>15:
                  return print('Error, elegiste la opción incorrecta. ')
             else:
                 for i in range(len(matriz)):
-                    if matriz[i][0]==desicion:
+                    if matriz[i][0]==decision:
                         print(f'La habitacion {matriz[i][0]}  está {estadoHabitacion(matriz[i][2]) } y es una habitacion {tipoDeHabitacion(matriz[i][1])}')
                         if estadoHabitacion(matriz[i][2])== 'Ocupada':
                             print(f'está ocupada desde el dia {matriz[i][3]} hasta el día{matriz[i][4]}')
@@ -145,11 +146,11 @@ def chekIn(matriz):
     elif  matriz[numHab-1][2]!=0:
          print('Esta habitación no está disponible.')
     else:
-        matriz[numHab -1][2] = 2
+        
 
-        nombre=input('Ingrese Nombre y Apellido con ese formato: ')
+        nombre=input('Ingrese Nombre y Apellido con ese formato (Hugo Chávez): ')
         while validarNombre(nombre)==False:
-            nombre=input('Ingrese un formato  de nombre válido: ')
+            nombre=input('Ingrese un formato  de nombre válido (Hugo Chávez): ')
 
         cedula=input('Ingrese su cedula con el formato V-xxxxxxxx: ')
         while validarCedula(cedula)==False:
@@ -175,6 +176,7 @@ def chekIn(matriz):
                 fechaSalida = input('Ingrese la fecha de salida con formato dd/mm/yyyy: ')
             
         if validarFechas(fechaIngreso, fechaSalida)== True:
+            matriz[numHab -1][2] = 2
             matriz[numHab -1][3] = fechaIngreso
             matriz[numHab -1][4] = fechaSalida
             matriz[numHab -1][5] = nombre
@@ -198,9 +200,12 @@ def checkOut(matriz):
         
         while validarNombre(nombre)== False:
             nombre =input('Ingrese un formato válido Nombre y Apellido: ')
+       
         numHab= int(input('Ingrese el número de habitación: '))
+       
         while numHab>15 or numHab<1:
             numHab= int(input('Ingrese un numero de habitación que exista.'))
+        
         for i in range(len(matriz)):
             if matriz[i][5]== nombre and matriz[i][0]==numHab:
                 print('Check out exitoso, gracias por la estadía. ')
@@ -250,9 +255,9 @@ def reservacion(matriz):
         else:
             
     
-            nombre=input('Ingrese Nombre y Apellido con ese formato: ')
+            nombre=input('Ingrese Nombre y Apellido con ese formato (Hugo Chávez): ')
             while validarNombre(nombre)==False:
-                nombre=input('Ingrese un formato  de nombre válido: ')
+                nombre=input('Ingrese un formato  de nombre válido(Hugo Chávez): ')
     
             cedula=input('Ingrese su cedula con el formato V-xxxxxxxx: ')
             while validarCedula(cedula)==False:
@@ -278,7 +283,7 @@ def reservacion(matriz):
                     fechaSalida = input('Ingrese la fecha de salida con formato dd/mm/yyyy: ')
                 
             if validarFechas(fechaIngreso, fechaSalida)== True:
-                matriz[numHab -1][2] = 3
+                matriz[numHab -1][2] = 1
                 matriz[numHab -1][3] = fechaIngreso
                 matriz[numHab -1][4] = fechaSalida
                 matriz[numHab -1][5] = nombre
@@ -306,7 +311,7 @@ def reservacion(matriz):
             while numHab>15 or numHab<1:
                 numHab= int(input('Ingrese un numero de habitación que exista.'))
             for i in range(len(matriz)):
-                if matriz[i][5]== nombre and matriz[i][0]==numHab:
+                if matriz[i][5]== nombre and matriz[i][0]==numHab and matriz[i][2]==1:
                     print('Cancelar reserva exitosa. ')
                     matriz[i][2]=0
                     matriz[i][3]=''
@@ -314,7 +319,7 @@ def reservacion(matriz):
                     matriz[i][5]=''
                     matriz[i][6]=''
                     return matriz
-            print('Los datos dados no corresponden al de ninguna habitación. ')
+            print('Los datos dados no corresponden al de ninguna habitación reservada. ')
             return matriz
         else:
             return matriz

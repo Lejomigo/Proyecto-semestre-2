@@ -12,7 +12,7 @@ matrizHotel =Funciones.cargardatos()
 
 
 while True:
-     print(matrizHotel)
+     # print(matrizHotel)
      time.sleep(1)
      print('-------------------------------------------------')
      print('      MENÚ DEL HOTEL CHARALLAVE and SUITES       ')
